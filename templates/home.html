@@ -1,0 +1,137 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- Banner Starts Here -->
+<div class="main-banner header-text">
+    <div class="container-fluid">
+        <div class="owl-banner owl-carousel">
+            {% for i in range(0,5) %}
+            <div class="item">
+                <img src="{{posts[i]['image']}}" style="min-width: auto; height: 450px; object-fit: cover;">
+                <div class="item-content">
+                    <div class="main-content">
+                        <div class="meta-category">
+                            <span>{{posts[i]['genre']}}</span>
+                        </div>
+                        <a href="/post/{{posts[i]['Id']}}">
+                            <h4>{{posts[i]['title']}}</h4>
+                        </a>
+                        <ul class="post-info">
+                            <li><a href="#">{{posts[i]['author']}}</a></li>
+                            <li><a href="#">{{posts[i]['date']}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <section class="blog-posts">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="all-blog-posts">
+                        <div class="row">
+                            {% for i in range(0,6) %}
+                            <div class="col-lg-12">
+                                <div class="blog-post">
+                                    <div class="blog-thumb">
+                                        <img src="{{posts[i]['image']}}" alt="">
+                                    </div>
+                                    <div class="down-content">
+                                        <span span>{{posts[i]['genre']}}</span>
+                                        <a href="/post/{{posts[i]['Id']}}">
+                                            <h4>{{posts[i]['title']}}</h4>
+                                        </a>
+                                        <ul class="post-info">
+                                            <li>{{posts[i]['author']}}</a>
+                                            </li>
+                                            <li>{{posts[i]['date']}}</a>
+                                            </li>
+                                        </ul>
+                                        <p class="fit">{{posts[i]['content']}}</p>
+                                        <div class="post-options">
+                                            <div class="row">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            <div class="col-lg-12">
+                                <div class="main-button">
+                                    <a href="{{url_for('all_blog_posts')}}">View All Posts</a>
+                                </div>
+                                <div class="main-button" style="padding-top:5px">
+                                    <a href="{{url_for('create')}}">Create New Blog</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="sidebar">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="sidebar-item recent-posts">
+                                    <div class="sidebar-heading">
+                                        <h2>Recent Posts</h2>
+                                    </div>
+                                    <div class="content">
+                                        <ul>
+                                            {% for i in range(0,5) %}
+                                            <li>
+                                                <a href="/post/{{posts[i]['Id']}}">
+                                                    <h5>{{posts[i]['title']}}</h5>
+                                                    <span>{{posts[i]['date']}}</span>
+                                                </a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="sidebar-item categories">
+                                    <div class="sidebar-heading">
+                                        <h2>Categories</h2>
+                                    </div>
+                                    <div class="content">
+                                        <ul>
+                                            <li><a href="#">- Nature Lifestyle</a></li>
+                                            <li><a href="#">- Awesome Layouts</a></li>
+                                            <li><a href="#">- Creative Ideas</a></li>
+                                            <li><a href="#">- Responsive Templates</a></li>
+                                            <li><a href="#">- HTML5 / CSS3 Templates</a></li>
+                                            <li><a href="#">- Creative &amp; Unique</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="sidebar-item tags">
+                                    <div class="sidebar-heading">
+                                        <h2>Tag Clouds</h2>
+                                    </div>
+                                    <div class="content">
+                                        <ul>
+                                            <li><a href="#">Lifestyle</a></li>
+                                            <li><a href="#">Creative</a></li>
+                                            <li><a href="#">HTML5</a></li>
+                                            <li><a href="#">Inspiration</a></li>
+                                            <li><a href="#">Motivation</a></li>
+                                            <li><a href="#">PSD</a></li>
+                                            <li><a href="#">Responsive</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock %}
