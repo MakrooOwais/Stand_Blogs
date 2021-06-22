@@ -6,8 +6,7 @@ import re
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, url_for, redirect
 from datetime import date
-from flask_fontawesome import FontAwesome
-from requests_toolbelt.adapters import appengine
+#from flask_fontawesome import FontAwesome
 
 session = {"username": None, "logged_in": False, "Id": None}
 # Enter your database connection details below
@@ -18,19 +17,18 @@ today = d2.strftime("%B, %d, %Y")
 
 
 # Init App
-appengine.monkeypatch()
 app = Flask(__name__, instance_relative_config=True)
 
 app.secret_key = "your secret key"
 
-fa = FontAwesome(app)
+#fa = FontAwesome(app)
 
 
 config = {
-    'user': 'OWAISMAKROO81',
-    'password': 'pAqx@LvV2vX2Dvu',
-    'host': 'OWAISMAKROO81.mysql.pythonanywhere-services.com',
-    'database': 'blog_website',
+    'user': 'sql6420751',
+    'password': 'MGRiWsnmSA',
+    'host': 'sql6.freemysqlhosting.net',
+    'database': 'sql6420751',
 }
 
 #pAqx@LvV2vX2Dvu
@@ -42,6 +40,7 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLD = "static/images/uploads"
 UPLOAD_FOLDER = os.path.join(APP_ROOT, UPLOAD_FOLD)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
 
 
 def add_to_database(title, content, author, date, image, genre):
@@ -170,6 +169,7 @@ def create():
         image_dir = "/" + UPLOAD_FOLD + "/" + secure_filename(img.filename)
         img.save(image)
 
+
         add_to_database(title, content, author, today, image_dir, genre)
 
         return redirect(
@@ -202,7 +202,7 @@ def register():
         username = request.form["username"]
         password = request.form["password"]
         img = request.files["image"]
-        image = os.path.join(app.config["UPLOAD_FOLDER"], secure_filename(img.filename))
+        image = os.path.join(app.root_path, app.config["UPLOAD_FOLDER"], secure_filename(img.filename))
         image_dir = "/" + UPLOAD_FOLD + "/" + secure_filename(img.filename)
         img.save(image)
 
