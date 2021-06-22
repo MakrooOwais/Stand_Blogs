@@ -6,6 +6,7 @@ import re
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, url_for, redirect
 from datetime import date
+from whitenoise import WhiteNoise
 #from flask_fontawesome import FontAwesome
 
 session = {"username": None, "logged_in": False, "Id": None}
@@ -18,6 +19,7 @@ today = d2.strftime("%B, %d, %Y")
 
 # Init App
 app = Flask(__name__, instance_relative_config=True)
+app.wsgi_app = WhiteNoise(app.wsgi_app, root='static/')
 
 app.secret_key = "your secret key"
 
