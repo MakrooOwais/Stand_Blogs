@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block heading %}
 
 <div class="heading-page header-text">
     <section class="page-heading">
@@ -13,7 +13,7 @@
         </div>
     </section>
 </div>
-
+{% endblock %} {% block content %}
 <section class="blog-posts">
     <div class="container">
         <div class="row">
@@ -49,14 +49,13 @@
 
                         <div class="col-lg-12">
                             <div class="main-button" style="padding-top:5px">
-                                <a href="{{url_for('create')}}">Create New Blog</a>
+                                <a href="{{url_for('auth.create')}}">Create New Blog</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            {% endblock %}{% block sidebar %}{{super()}}{% endblock %}
         </div>
     </div>
 </section>
-
-{% endblock %}

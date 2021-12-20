@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block heading %}
 
 <div class="heading-page header-text">
     <section class="page-heading">
@@ -14,10 +14,11 @@
         </div>
     </section>
 </div>
-
+{% endblock %}
 <!-- Banner Ends Here -->
+{% block content %}
 
-<section class="blog-posts grid-system">
+<section class="blog-posts">
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
@@ -25,17 +26,14 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="blog-post">
-                                <div class="blog-thumb">
-                                    <img src="assets/images/blog-post-02.jpg" alt="" />
-                                </div>
                                 <div class="down-content">
                                     <div class="blog-thumb">
-                                        <img src="{{post['image']}}" alt="">
+                                        <img src="https://blog-website-8149251.s3.ap-south-1.amazonaws.com{{post['image']}}" alt="">
                                     </div>
                                     <span>{{post['genre']}}</span>
                                     <h4>{{post['title']}}</h4>
                                     <ul class="post-info">
-                                        <li><a href="#">{{post['author']}}}</a></li>
+                                        <li><a href="#">{{post['author']}}</a></li>
                                         <li><a href="#">{{post['date']}}</a></li>
                                         <li><a href="#">{{no}} Comments</a></li>
                                     </ul>
@@ -53,10 +51,10 @@
                                         {% for comment in comments %}
                                         <li>
                                             <div class="author-thumb">
-                                                <img src="/static/images/comment-author-03.jpg" alt="" />
+                                                <img src="https://blog-website-8149251.s3.ap-south-1.amazonaws.com/{{comment['picture']}}" onerror=this.src="https://blog-website-8149251.s3.ap-south-1.amazonaws.com/static/images/comment-author-03.jpg" alt="" />
                                             </div>
                                             <div class="right-content">
-                                                <h4>{{comment['user_name']}}</h4>{{comment['date']}}</span>
+                                                <h4>{{comment['username']}}<span>{{comment['date']}}</span>
                                                 </h4>
                                                 <p>{{comment['message']}}</p>
 
@@ -78,7 +76,7 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <fieldset>
-                                                    <textarea name="message" rows="6" id="message" placeholder="Type your comment" required=""></textarea>
+                                                    {{ form.comment(placeholder="Your Comment...", rows=6) }}
                                                 </fieldset>
                                             </div>
                                             <div class="col-lg-12">
@@ -96,68 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 ">
-                <div class="sidebar ">
-                    <div class="row ">
-                        <div class="col-lg-12 ">
-                            <div class="sidebar-item recent-posts ">
-                                <div class="sidebar-heading ">
-                                    <h2>Recent Posts</h2>
-                                </div>
-                                <div class="content ">
-                                    <ul>
-                                        {% for i in range(0,5) %}
-                                        <li>
-                                            <a href="/post/{{posts[i][ 'Id']}} ">
-                                                <h5>{{posts[i]['title']}}</h5>
-                                                <span>{{posts[i]['date']}}</span>
-                                            </a>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 ">
-                            <div class="sidebar-item categories ">
-                                <div class="sidebar-heading ">
-                                    <h2>Categories</h2>
-                                </div>
-                                <div class="content ">
-                                    <ul>
-                                        <li><a href="# ">- Nature Lifestyle</a></li>
-                                        <li><a href="# ">- Awesome Layouts</a></li>
-                                        <li><a href="# ">- Creative Ideas</a></li>
-                                        <li><a href="# ">- Responsive Templates</a></li>
-                                        <li><a href="# ">- HTML5 / CSS3 Templates</a></li>
-                                        <li><a href="# ">- Creative &amp; Unique</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 ">
-                            <div class="sidebar-item tags ">
-                                <div class="sidebar-heading ">
-                                    <h2>Tag Clouds</h2>
-                                </div>
-                                <div class="content ">
-                                    <ul>
-                                        <li><a href="# ">Lifestyle</a></li>
-                                        <li><a href="# ">Creative</a></li>
-                                        <li><a href="# ">HTML5</a></li>
-                                        <li><a href="# ">Inspiration</a></li>
-                                        <li><a href="# ">Motivation</a></li>
-                                        <li><a href="# ">PSD</a></li>
-                                        <li><a href="# ">Responsive</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% endblock %}{% block sidebar %}{{super()}}{% endblock %}
         </div>
     </div>
-    </div>
 </section>
-{% endblock %}

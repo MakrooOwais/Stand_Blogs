@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
+{% block head %}
+
 <head>
 
     <meta charset="utf-8">
@@ -24,8 +26,7 @@
     <link rel="stylesheet" href="{{url_for('static', filename='assets/css/owl.css')}}">
 
 </head>
-
-</head>
+{% endblock %}
 
 <body>
 
@@ -52,29 +53,91 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="{{url_for('home')}}">Home</a>
+                            <a class="nav-link" href="{{url_for('auth.home')}}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('home')}}">About Us</a>
+                            <a class="nav-link" href="{{url_for('auth.home')}}">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('all_blog_posts')}}">Blog Entries</a>
+                            <a class="nav-link" href="{{url_for('auth.all_blog_posts')}}">Blog Entries</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact.html">Post Details</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('register')}}">Contact US</a>
+                            <a class="nav-link" href="{{url_for('auth.register')}}">Contact US</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
+    {% block heading %} {% endblock %} {% block content %} {% endblock %} {% block sidebar %}
+
+    <div class="col-lg-4">
+        <div class="sidebar">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="sidebar-item recent-posts">
+                        <div class="sidebar-heading">
+                            <h2>Recent Posts</h2>
+                        </div>
+                        <div class="content">
+                            <ul>
+                                {% for i in range(0,5) %}
+                                <li>
+                                    <a href="/post/{{posts[i]['Id']}}">
+                                        <h5>{{posts[i]['title']}}</h5>
+                                        <span>{{posts[i]['date']}}</span>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="sidebar-item categories">
+                        <div class="sidebar-heading">
+                            <h2>Categories</h2>
+                        </div>
+                        <div class="content">
+                            <ul>
+                                <li><a href="#">- Nature Lifestyle</a></li>
+                                <li><a href="#">- Awesome Layouts</a></li>
+                                <li><a href="#">- Creative Ideas</a></li>
+                                <li><a href="#">- Responsive Templates</a></li>
+                                <li><a href="#">- HTML5 / CSS3 Templates</a></li>
+                                <li><a href="#">- Creative &amp; Unique</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="sidebar-item tags">
+                        <div class="sidebar-heading">
+                            <h2>Tag Clouds</h2>
+                        </div>
+                        <div class="content">
+                            <ul>
+                                <li><a href="#">Lifestyle</a></li>
+                                <li><a href="#">Creative</a></li>
+                                <li><a href="#">HTML5</a></li>
+                                <li><a href="#">Inspiration</a></li>
+                                <li><a href="#">Motivation</a></li>
+                                <li><a href="#">PSD</a></li>
+                                <li><a href="#">Responsive</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
-    {% block content %} {% endblock %}
+    {% endblock %} {% block footer %}
     <footer>
         <div class="container">
             <div class="row">
@@ -95,10 +158,11 @@
             </div>
         </div>
     </footer>
+    {% endblock %}
 
 
     <!-- Bootstrap core JavaScript -->
-
+    {% block scripts %}
     <script type=text/javascript src="{{url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
     <script type=text/javascript src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
@@ -121,5 +185,7 @@
             }
         }
     </script>
+    {% endblock %}
+</body>
 
 </html>

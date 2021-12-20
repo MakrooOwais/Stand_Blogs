@@ -1,4 +1,110 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block head %} {{super()}}
+<style>
+    .customfile-input {
+        position: absolute;
+        height: 100px;
+        cursor: pointer;
+        background: transparent;
+        border: 0;
+        opacity: 0;
+        -moz-opacity: 0;
+        filter: progid: DXImageTransform.Microsoft.Alpha(opacity=0);
+        z-index: 999;
+    }
+    
+    .customfile {
+        /*width: 400px;*/
+        /* ##1 -- */
+        background: #666;
+        cursor: pointer;
+        overflow: hidden;
+        padding: 2px;
+        border: 1px solid #444;
+        -moz-border-radius: 7px;
+        -webkit-border-radius: 7px;
+        border-radius: 7px;
+        position: relative;
+        /* ##2 ++ */
+        white-space: nowrap;
+    }
+    
+    .customfile-disabled {
+        opacity: .5;
+        filter: progid: DXImageTransform.Microsoft.Alpha(opacity=0);
+        cursor: default;
+    }
+    
+    .customfile-feedback {
+        /*display:    block;*/
+        margin: 1px 1px 1px 5px;
+        font-size: 1.2em;
+        color: #fff;
+        font-style: italic;
+        padding: .3em .6em;
+    }
+    
+    .customfile-feedback-populated {
+        color: #fff;
+        font-style: normal;
+        font-weight: bold;
+        padding-left: 20px;
+        background: url(https://dl.dropbox.com/u/20165443/jsFiddle/images/jquery.fileinput.icon-generic.gif) left 4px no-repeat;
+    }
+    
+    .customfile-button {
+        border: 1px solid #999;
+        background: #333 url(https://dl.dropbox.com/u/20165443/jsFiddle/images/jquery.fileinput.bg-submit.gif) bottom repeat-x;
+        color: #fff;
+        font-weight: bold;
+        float: right;
+        /*width:                 50px;*/
+        /* ##1 -- */
+        padding: .3em .6em;
+        text-align: center;
+        text-decoration: none;
+        font-size: 1.2em;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+    }
+    
+    .customfile-hover .customfile-button,
+    .customfile-focus .customfile-button {
+        color: #111;
+        background: #aaa url(https://dl.dropbox.com/u/20165443/jsFiddle/images/jquery.fileinput.bg-btn.png) bottom repeat-x;
+        border-color: #aaa;
+        padding: .3em .6em;
+    }
+    
+    .customfile-focus .customfile-button {
+        outline: 1px dotted #ccc;
+    }
+    /*file type icons*/
+    
+    .customfile-ext-jpg,
+    .customfile-ext-gif,
+    .customfile-ext-png,
+    .customfile-ext-jpeg,
+    .customfile-ext-bmp {
+        background-image: url(https://dl.dropbox.com/u/20165443/jsFiddle/images/jquery.fileinput.icon-image.gif);
+    }
+    
+    .customfile-ext-mp3,
+    .customfile-ext-mp4,
+    .customfile-ext-mov,
+    .customfile-ext-swf,
+    .customfile-ext-wav,
+    .customfile-ext-m4v {
+        background-image: url(https://dl.dropbox.com/u/20165443/jsFiddle/images/jquery.fileinput.icon-media.gif);
+    }
+    
+    .customfile-ext-zip,
+    .customfile-ext-tar,
+    .customfile-ext-sit {
+        background-image: url(https://dl.dropbox.com/u/20165443/jsFiddle/images/jquery.fileinput.icon-zip.gif);
+    }
+</style>
+{% endblock %} {% block heading %}
 
 <div class="heading-page header-text">
     <section class="page-heading">
@@ -13,10 +119,10 @@
         </div>
     </section>
 </div>
-
+{% endblock %}
 <!-- Banner Ends Here -->
 
-
+{% block content %}
 <section class="contact-us">
     <div class="container">
         <div class="row">
@@ -27,52 +133,295 @@
                         <div class="col-lg-8">
                             <div class="sidebar-item contact-form">
                                 <div class="sidebar-heading">
-                                    <h2>Send us a message</h2>
+                                    <h2>Create a new Blog!</h2>
                                 </div>
                                 <div class="content">
                                     <form method="POST" enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12">
                                                 <fieldset>
-                                                    <input name="author" type="text" id="name" placeholder="Your Name" required="">
-                                                </fieldset>
-                                            </div>
-                                            <div class="col-md-12 col-sm-12">
-                                                <fieldset>
-                                                    <input name="title" type="text" id="title" placeholder="Title" required="">
-                                                </fieldset>
-                                            </div>
-
-                                            <div class="col-md-6 col-sm-12">
-                                                <fieldset>
-                                                    <input type="file" name="image" id='image'>
+                                                    {{ form.title(placeholder="Title") }}
                                                 </fieldset>
                                             </div>
                                             <div class="col-lg-12" style="padding-top:5px">
                                                 <fieldset>
-                                                    <textarea name="content" rows="6" id="message" placeholder="Your Blog..." required=""></textarea>
+                                                    {{ form.genre(placeholder="Genre") }}
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12">
+
+                                                <fieldset>
+                                                    <label for="file_A">Default Style</label>
+                                                    <div class="customfile" style="width: 250px;">
+                                                        <span class="customfile-button" aria-hidden="true">Browse</span>
+                                                        <span class="customfile-feedback" aria-hidden="true" style="display: block;">No file selected</span> {{ form.file(id="file_A", class="customfile-input", style="left: -38px; top: 8px;") }}
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-12" style="padding-top:5px">
+                                                <fieldset>
+                                                    {{ form.content(placeholder="Your Blog...", rows=6) }}
                                                 </fieldset>
                                             </div>
                                             <div class="col-lg-12">
                                                 <fieldset>
+                                                    {{ form.submit(class='main-button')}}
                                                     <button type="submit" class="main-button" style="width: 100%;">Post!!</button>
                                                 </fieldset>
                                             </div>
                                         </div>
-
                                     </form>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
-
-
         </div>
     </div>
 </section>
+{% endblock %}{% block sidebar %}{% endblock %} {% block footer %}{{super()}}{% endblock %}{% block scripts %} {{ super() }}
+<script language="text/Javascript">
+    function customFileInput(options) {
 
+        // ##1 ++
+        var defaults = {
+            width: 'inherit',
+            buttonText: 'Browse',
+            changeText: 'Change',
+            inputText: 'No file selected',
+            showInputText: true,
+            maxFileSize: 0, // ##3 ++
+
+            onChange: $.noop
+        };
+
+
+        // ##1 ++
+        var opts = $.extend(true, {}, defaults, options);
+
+        //apply events and styles for file input element
+        var fileInput = $(this).
+        addClass('customfile-input') //add class for CSS
+            .mouseover(function() {
+                upload.addClass('customfile-hover');
+            }).
+        mouseout(function() {
+            upload.removeClass('customfile-hover');
+        }).
+        focus(function() {
+            upload.addClass('customfile-focus');
+            fileInput.data('val', fileInput.val());
+        }).
+        blur(function() {
+            upload.removeClass('customfile-focus');
+            $(this).trigger('checkChange');
+        }).
+        bind('disable', function() {
+            fileInput.attr('disabled', true);
+            upload.addClass('customfile-disabled');
+        }).
+        bind('enable', function() {
+            fileInput.removeAttr('disabled');
+            upload.removeClass('customfile-disabled');
+        }).
+        bind('checkChange', function() {
+            if (fileInput.val() && fileInput.val() != fileInput.data('val')) {
+                fileInput.trigger('change');
+            }
+        }).
+        bind('change', function() {
+            // ##5 ++
+            if (opts.showInputText) {
+
+                //get file name
+                var fileName = $(this).val().split(/\\/).pop();
+
+                $(this).data('text', fileName);
+
+                //get file extension
+                var fileExt = 'customfile-ext-' + fileName.split('.').pop().toLowerCase();
+
+                //change text of button
+                // uploadButton.text('Change'); // ##2 --
+                uploadButton.text(opts.changeText); // ##2 ++
+
+                //update the feedback
+                uploadFeedback.
+                text(fileName) //set feedback text to filename
+                    .removeClass(uploadFeedback.data('fileExt') || '') //remove any existing file extension class
+                    .addClass(fileExt) //add file extension class
+                    .data('fileExt', fileExt) //store file extension for class removal on next change
+                    .addClass('customfile-feedback-populated'); //add class to show populated state
+
+
+                autoTruncateFileName();
+            }
+
+            if ($.isFunction(opts.onChange)) {
+                opts.onChange.apply(this, arguments);
+            }
+        }).
+        click(function() { //for IE and Opera, make sure change fires after choosing a file, using an async callback
+            fileInput.data('val', fileInput.val());
+            setTimeout(function() {
+                fileInput.trigger('checkChange');
+            }, 100);
+        });
+
+        //create custom control container
+        var upload = $('<div class="customfile"></div>');
+
+        // ##1 ++
+        upload.css({
+            width: opts.width
+        });
+
+
+        //create custom control button
+        // ##2
+        var uploadButton = $('<span class="customfile-button" aria-hidden="true"></span>').html(opts.buttonText).appendTo(upload);
+        //create custom control feedback
+        // ##2
+        var uploadFeedback = $('<span class="customfile-feedback" aria-hidden="true"></span>').html(opts.inputText).appendTo(upload);
+
+        // ##3
+        if (opts.maxFileSize > 0 && $('input[type="hidden"][name="MAX_FILE_SIZE"]').length == 0) {
+            $('<input type="hidden" name="MAX_FILE_SIZE">').val(opts.maxFileSize).appendTo(upload);
+        }
+
+
+        // ##4 ++
+        var autoTruncateFileName = function() {
+            //get file name
+            var fileName = fileInput.val() || opts.inputText;
+
+            if (fileName.length) {
+                var limit = 0, // ensuring we're not going into an infinite loop
+                    trimmedFileName = fileName;
+                uploadFeedback.
+                text(fileName).
+                css({
+                    display: 'inline'
+                });
+                while (limit < 1024 && trimmedFileName.length > 0 && uploadButton.outerWidth() + uploadFeedback.outerWidth() + 5 >= uploadButton.parent().innerWidth()) {
+                    if (window.CP.shouldStopExecution(0)) break;
+                    trimmedFileName = trimmedFileName.substr(0, trimmedFileName.length - 1);
+                    uploadFeedback.text(trimmedFileName + '...');
+                    limit++;
+                }
+                window.CP.exitedLoop(0);
+                uploadFeedback.css({
+                    display: 'block'
+                }); // ##4
+            }
+        };
+
+        //match disabled state
+        if (fileInput.is('[disabled]')) {
+            fileInput.trigger('disable');
+        }
+
+        uploadFeedback.data('text', opts.inputText);
+
+        // ##5 ++
+        if (!opts.showInputText) {
+            uploadFeedback.hide();
+            uploadButton.
+            css({
+                float: 'inherit',
+                display: 'block' // take up the full width of the parent container
+            }).
+            parent().
+            css({
+                padding: 0
+            });
+
+        } else {
+            uploadFeedback.css({
+                display: 'block'
+            });
+
+
+            $(window).bind('resize', autoTruncateFileName);
+
+        }
+
+
+        //on mousemove, keep file input under the cursor to steal click
+        upload.
+        mousemove(function(e) {
+            fileInput.css({
+                'left': e.pageX - upload.offset().left - fileInput.outerWidth() + 20, //position right side 20px right of cursor X)
+                'top': e.pageY - upload.offset().top - $(window).scrollTop() - 3
+            });
+
+        }).
+        insertAfter(fileInput); //insert after the input
+
+        fileInput.appendTo(upload);
+
+        //return jQuery
+        return $(this);
+    };
+
+
+
+
+
+
+
+
+    /**
+     * ----------------------------------------------------------
+     * EXAMPLE
+     */
+    $(function() {
+
+        // default
+        $('#file_A').customFileInput();
+
+        // percentage width
+        $('#file_B').customFileInput({
+            width: '50%'
+        });
+
+
+        // Custom Text
+        $('#file_C').customFileInput({
+            width: '30%',
+            buttonText: 'Select File',
+            changeText: 'Change File',
+            inputText: 'Please select a file'
+        });
+
+
+        // Very short field (to test auto-truncated file name)
+        $('#file_D').customFileInput({
+            width: 150,
+            inputText: ''
+        });
+
+
+        // button only
+        $('#file_E').customFileInput({
+            width: 90,
+            buttonText: 'Upload File',
+            changeText: 'Change',
+            inputText: '',
+            showInputText: false
+        });
+
+
+        // Event Handlers
+        $('#file_F').customFileInput({
+            width: 250,
+            onChange: function() {
+                console.info(arguments);
+            }
+        });
+
+
+    });
+</script>
 {% endblock %}
