@@ -1,15 +1,15 @@
 import ast
 import os
-import boto3
 
-from flask import Blueprint, render_template, redirect, url_for, request
+from minio import Minio
+from flask import Blueprint, render_template, redirect, url_for, request, g
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 
 from libs.models import User
 from libs.db_blog import get_blogs_from_db, get_blog_from_db, add_comment, add_to_database, today
-from libs.s3_cred import aws_access_key_id, aws_secret_access_key, aws_bucket_name
+from libs.s3_cred import aws_access_key_id, aws_secret_access_key, aws_bucket_name, aws_region
 from libs.forms import LoginForm, RegisterForm, BlogForm, CommentForm
 from libs.db_user import add_user
 
@@ -22,21 +22,18 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLD = "static/images/uploads"
 UPLOAD_FOLDER = os.path.join(APP_ROOT, UPLOAD_FOLD)
 
+IMAGE_FOLDER = "http://192.168.1.5:9000/"+ aws_bucket_name + "/static/images/uploads/"
 
-
-boto3_client = boto3.client(
-   "s3",
-   aws_access_key_id = aws_access_key_id,
-   aws_secret_access_key = aws_secret_access_key,
+s3_client = Minio(
+    "192.168.1.5:9000",
+    access_key = aws_access_key_id,
+    secret_key = aws_secret_access_key,
+    region = aws_region,
+    secure=False
 )
 
-def save_boto3(image, path):
-    bucket_name = aws_bucket_name
-    boto3_client.upload_fileobj(
-        image,
-        bucket_name,
-        path,
-    )
+def save_s3(image, path):
+    s3_client.fput_object(aws_bucket_name, 'static/images/uploads/{}'.format(path), path, content_type='image/jpeg')
 
 @auth.route("/")
 def home():
@@ -44,11 +41,11 @@ def home():
     return render_template("home.html", posts=blogs)
 
 
-@auth.route("/post/<int:post_id>", methods=["GET", "POST"])  # /posts/0
+@auth.route("/post/<int:post_id>", methods=["GET", "POST"])
 @login_required
 def posts(post_id):
     form = CommentForm()
-    if form.validate_on_submit():
+    if form.submit.data:
         message = form.comment.data
         add_comment(post_id, message)
         return redirect(
@@ -83,14 +80,16 @@ def create():
     form = BlogForm()
     if form.submit.data:
         image = form.file.data
-        image_dir = UPLOAD_FOLD + "/" + secure_filename(image.filename)
-        save_boto3(image, image_dir)
+        image.save(secure_filename(image.filename))
+        image_dir = secure_filename(image.filename)
+        save_s3(image, image_dir)
+        os.remove(image_dir)
 
-        add_to_database(form.title.data, form.content.data, current_user.username, today,  "/" + image_dir, form.genre.data)
+        add_to_database(form.title.data, form.content.data, current_user.user_name, today,  image_dir, form.genre.data)
 
         return redirect(
             "/post/{}".format(
-                len(get_blogs_from_db())+1 ),
+                len(get_blogs_from_db())),
             )
 
     return render_template("new_blog.html", form=form)
@@ -99,7 +98,6 @@ def create():
 @auth.route("/all_blogs_posts")
 def all_blog_posts():
     blogs = get_blogs_from_db()
-
     return render_template("blog_entries.html", posts=blogs)
 
 
@@ -107,8 +105,8 @@ def all_blog_posts():
 def login():
     form = LoginForm()
     error = None
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+    if form.submit.data:
+        user = User.query.filter_by(user_name=form.username.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
@@ -121,12 +119,14 @@ def login():
 def register():
     form = RegisterForm()
 
-    if form.validate_on_submit():
+    if form.submit.data:
         image = form.image.data
-        image_dir =  UPLOAD_FOLD + "/user/" + form.username.data + os.path.splitext(secure_filename(image.filename))[1]
-        save_boto3(image, path=image_dir)
+        image_dir =  form.username.data + os.path.splitext(secure_filename(image.filename))[1]
+        image.save(image_dir)
+        save_s3(image, path=image_dir)
         hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = add_user(username=form.username.data, password=hashed_password, picture= "/" + image_dir)       
+        new_user = add_user(username=form.username.data, password=hashed_password, picture= image_dir)
+        os.remove(image_dir)
         login_user(new_user, remember=True)
         return redirect(url_for('auth.home'))
 

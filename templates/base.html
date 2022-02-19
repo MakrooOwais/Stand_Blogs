@@ -8,22 +8,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="TemplateMo">
+    <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
 
     <title>Stand Blogs</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url}}vendor/bootstrap/css/bootstrap.min.css">
 
-    <link rel="shortcut icon" href="{{url_for('static', filename='images/favicon.ico')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{url}}images/uploads/favicon.ico" type="image/x-icon">
 
     <!-- Additional CSS Files -->
 
 
-    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/fontawesome.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/templatemo-stand-blog.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='assets/css/owl.css')}}">
+    <link rel="stylesheet" href="{{url}}assets/css/fontawesome.css">
+    <link rel="stylesheet" href="{{url}}assets/css/templatemo-stand-blog.css">
+    <link rel="stylesheet" href="{{url}}assets/css/owl.css">
 
 </head>
 {% endblock %}
@@ -44,7 +44,7 @@
     <header class="">
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="{{url_for('auth.home')}}">
                     <h2>Stand Blogs<em>.</em></h2>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,92 +52,29 @@
           </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="{{url_for('auth.home')}}">Home</a>
-                        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('auth.home')}}">About Us</a>
+                            <a class="nav-link" href="{{url_for('auth.home')}}">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{url_for('auth.all_blog_posts')}}">Blog Entries</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Post Details</a>
+                            <a class="nav-link" href="{{url_for('auth.login')}}">Log In</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('auth.register')}}">Contact US</a>
+                            <a class="nav-link" href="{{url_for('auth.register')}}">Register</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    {% block heading %} {% endblock %} {% block content %} {% endblock %} {% block sidebar %}
-
-    <div class="col-lg-4">
-        <div class="sidebar">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="sidebar-item recent-posts">
-                        <div class="sidebar-heading">
-                            <h2>Recent Posts</h2>
-                        </div>
-                        <div class="content">
-                            <ul>
-                                {% for i in range(0,5) %}
-                                <li>
-                                    <a href="/post/{{posts[i]['Id']}}">
-                                        <h5>{{posts[i]['title']}}</h5>
-                                        <span>{{posts[i]['date']}}</span>
-                                    </a>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="sidebar-item categories">
-                        <div class="sidebar-heading">
-                            <h2>Categories</h2>
-                        </div>
-                        <div class="content">
-                            <ul>
-                                <li><a href="#">- Nature Lifestyle</a></li>
-                                <li><a href="#">- Awesome Layouts</a></li>
-                                <li><a href="#">- Creative Ideas</a></li>
-                                <li><a href="#">- Responsive Templates</a></li>
-                                <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                                <li><a href="#">- Creative &amp; Unique</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="sidebar-item tags">
-                        <div class="sidebar-heading">
-                            <h2>Tag Clouds</h2>
-                        </div>
-                        <div class="content">
-                            <ul>
-                                <li><a href="#">Lifestyle</a></li>
-                                <li><a href="#">Creative</a></li>
-                                <li><a href="#">HTML5</a></li>
-                                <li><a href="#">Inspiration</a></li>
-                                <li><a href="#">Motivation</a></li>
-                                <li><a href="#">PSD</a></li>
-                                <li><a href="#">Responsive</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    {% block heading %} {% endblock %} {% block content %} {% endblock %}
 
 
 
-    {% endblock %} {% block footer %}
+
+    {% block footer %}
     <footer>
         <div class="container">
             <div class="row">
@@ -163,16 +100,16 @@
 
     <!-- Bootstrap core JavaScript -->
     {% block scripts %}
-    <script type=text/javascript src="{{url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
-    <script type=text/javascript src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script type=text/javascript src="{{url}}vendor/jquery/jquery.min.js"></script>
+    <script type=text/javascript src="{{url}}vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 
     <!-- Additional Scripts -->
-    <script type=text/javascript src="{{url_for('static', filename='assets/js/custom.js')}}"></script>
-    <script type=text/javascript src="{{url_for('static', filename='assets/js/owl.js')}}"></script>
-    <script type=text/javascript src="{{url_for('static', filename='assets/js/slick.js')}}"></script>
-    <script type=text/javascript src="{{url_for('static', filename='assets/js/isotope.js')}}"></script>
-    <script type=text/javascript src="{{url_for('static', filename='assets/js/accordions.js')}}"></script>
+    <script type=text/javascript src="{{url}}assets/js/custom.js"></script>
+    <script type=text/javascript src="{{url}}assets/js/owl.js"></script>
+    <script type=text/javascript src="{{url}}assets/js/slick.js"></script>
+    <script type=text/javascript src="{{url}}assets/js/isotope.js"></script>
+    <script type=text/javascript src="{{url}}assets/js/accordions.js"></script>
 
 
     <script language="text/Javascript">

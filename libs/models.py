@@ -12,7 +12,7 @@ class User(UserMixin, db.Model):
         db.String(100),
         nullable=False,
         unique=True
-    )
+    ) 
     password = db.Column(
         db.String(80),
         primary_key=False,

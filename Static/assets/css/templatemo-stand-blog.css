@@ -59,7 +59,7 @@ h6 {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url(/static/images/heading-bg.jpg);
+    background-image: url(heading-bg.jpg);
 }
 
 .page-heading .text-content h4 {

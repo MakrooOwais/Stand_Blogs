@@ -19,7 +19,7 @@ def add_to_database(title_, content_, author_, date, image_, genre_):
 def add_comment(post_id: int, message):
     comment = (
             "{ 'username' : "
-            + "'{}', ".format(current_user.username)
+            + "'{}', ".format(current_user.user_name)
             + "'picture': '{}',".format(current_user.picture)
             + "'message' : '"
             + message
@@ -29,6 +29,7 @@ def add_comment(post_id: int, message):
         )
     comment_old = None
     blog = Blogs.query.filter_by(Id=post_id).first()
+    print(blog)
     comment_old = blog.comments
     if comment_old:
         comment_new = comment_old + comment
